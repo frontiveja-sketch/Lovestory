@@ -108,6 +108,20 @@ body {
 }
 #start-btn:hover { background: #6d28d9; }
 
+.continue-btn {
+  background: transparent;
+  border: 0.5px solid rgba(244,114,182,0.5);
+  color: var(--pink);
+  border-radius: var(--radius-sm);
+  padding: 11px;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+.continue-btn:hover { background: rgba(244,114,182,0.12); }
+
 /* --- Game screen --- */
 #game-screen { gap: 0; border-radius: var(--radius); overflow: hidden; }
 
@@ -185,6 +199,7 @@ body {
 }
 .character-wrap.happy { filter: drop-shadow(0 0 30px rgba(255,180,80,0.5)); }
 .character-wrap.shy   { filter: drop-shadow(0 0 30px rgba(255,120,160,0.5)); }
+.character-wrap.sad   { filter: drop-shadow(0 0 24px rgba(120,140,255,0.4)) brightness(0.92); }
 
 .dialogue-box {
   background: rgba(12,4,28,0.95);
@@ -256,3 +271,20 @@ body {
   transition: background 0.2s;
 }
 #replay-btn:hover { background: rgba(124,58,237,0.2); }
+
+/* --- ミュートボタン --- */
+.mute-btn {
+  position: fixed;
+  top: 14px; right: 14px;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  border: 0.5px solid rgba(200,160,255,0.3);
+  color: var(--text-on-dark);
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 50;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.mute-btn:hover { background: rgba(124,58,237,0.25); }

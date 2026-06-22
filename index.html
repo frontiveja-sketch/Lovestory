@@ -22,24 +22,24 @@
         <div class="char-cards">
           <div class="char-card selected" data-char="konuko">
             <div class="char-card-img-wrap">
-              <img src="assets/konuko.png" alt="こぬ子" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-              <div class="char-placeholder" style="display:none">こ</div>
+              <img src="assets/konuko_normal.png" alt="こぬ子" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="char-placeholder" style="display:none">🌸</div>
             </div>
             <div class="char-card-name">こぬ子</div>
             <div class="char-card-desc">図書館で出会う文学少女</div>
           </div>
           <div class="char-card" data-char="ren">
             <div class="char-card-img-wrap">
-              <img src="assets/ren.png" alt="蓮" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-              <div class="char-placeholder" style="display:none">蓮</div>
+              <img src="assets/ren_normal.png" alt="蓮" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="char-placeholder" style="display:none">⚡</div>
             </div>
             <div class="char-card-name">蓮（れん）</div>
             <div class="char-card-desc">クールな転校生</div>
           </div>
           <div class="char-card" data-char="hana">
             <div class="char-card-img-wrap">
-              <img src="assets/hana.png" alt="花" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-              <div class="char-placeholder" style="display:none">花</div>
+              <img src="assets/hana_normal.png" alt="花" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="char-placeholder" style="display:none">🌙</div>
             </div>
             <div class="char-card-name">花（はな）</div>
             <div class="char-card-desc">幼なじみのカフェ店員</div>
@@ -88,6 +88,12 @@
     </div>
   </div>
 
+  <!-- 音声（BGMはループ再生、SEは動的に生成して再生） -->
+  <audio id="bgm" loop preload="auto"></audio>
+
+  <button id="mute-btn" class="mute-btn" title="ミュート切替">🔊</button>
+
+  <script src="audio.js"></script>
   <script src="game.js"></script>
 </body>
 </html>
