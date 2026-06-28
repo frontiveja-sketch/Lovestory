@@ -13,35 +13,35 @@ const CHARS = {
       sad:    'assets/konuko_sad.png',
     },
     emoji: '🌸',
-    persona: 'あなたはこぬ子という名の、図書館が好きな文学少女です。内気で本が好き。少し照れやすく、「あの…」「えっと…」などをよく使います。返答は必ず日本語で、60文字以内にしてください。',
-    opening: '…あ、ごめんなさい。その本、私も読みたくて。',
-    bgColor: '#0f0020',
+    persona: 'あなたはこぬ子という名の、シャイでオタク気質な女の子です。アニメやゲームの話になると急に早口になりますが、普段は人と話すのが少し苦手で、「あの…」「えっと…」とよく言葉につまります。返答は必ず日本語で、60文字以内にしてください。',
+    opening: '…あ、ごめんなさい。びっくりして…声、かけてくれたんですか？',
+    bgColor: '#1a0f28',
   },
-  ren: {
-    name: '蓮（れん）',
+  shanko: {
+    name: 'しゃんこ',
     images: {
-      normal: 'assets/ren_normal.png',
-      happy:  'assets/ren_happy.png',
-      shy:    'assets/ren_shy.png',
-      sad:    'assets/ren_sad.png',
+      normal: 'assets/shanko_normal.png',
+      happy:  'assets/shanko_happy.png',
+      shy:    'assets/shanko_shy.png',
+      sad:    'assets/shanko_sad.png',
     },
-    emoji: '⚡',
-    persona: 'あなたは蓮という名の、クールな転校生です。口数が少なく、ぶっきらぼうに見えるが内心は優しい。返答は必ず日本語で、40文字以内の短い言葉にしてください。',
-    opening: '……なんで俺の隣に座るんだ。',
-    bgColor: '#00101a',
+    emoji: '🔥',
+    persona: 'あなたはしゃんこという名の、うるさくて元気いっぱいの女の子です。声が大きく、テンション高めで、「ねえねえ！」「やったー！」のような掛け声をよく使います。たまに空回りして照れます。返答は必ず日本語で、60文字以内にしてください。',
+    opening: 'ねえねえ！やっと会えた〜！ずっと話したかったんだよ！',
+    bgColor: '#2a1408',
   },
-  hana: {
-    name: '花（はな）',
+  deko: {
+    name: 'デー子',
     images: {
-      normal: 'assets/hana_normal.png',
-      happy:  'assets/hana_happy.png',
-      shy:    'assets/hana_shy.png',
-      sad:    'assets/hana_sad.png',
+      normal: 'assets/deko_normal.png',
+      happy:  'assets/deko_happy.png',
+      shy:    'assets/deko_shy.png',
+      sad:    'assets/deko_sad.png',
     },
-    emoji: '🌙',
-    persona: 'あなたは花という名の、幼なじみのカフェ店員です。明るくて少しからかい好き。フレンドリーな口調で話します。返答は必ず日本語で、60文字以内にしてください。',
-    opening: 'おかえり！今日も来てくれたんだ、嬉しい♪',
-    bgColor: '#0a1500',
+    emoji: '✨',
+    persona: 'あなたはデー子という名の、落ち着きがなく気が散りやすい女の子です。話題がすぐ変わったり、そわそわしたりしますが、悪気はなく無邪気な性格です。返答は必ず日本語で、60文字以内にしてください。',
+    opening: 'あっ、ねえねえ見て見て！…って、あ、あなた誰だっけ？',
+    bgColor: '#10122a',
   },
 };
 
@@ -93,27 +93,94 @@ function clearCheckpoint() {
   localStorage.removeItem(SAVE_KEY);
 }
 
-const CHOICES_BY_TURN = [
-  [
-    { text: '「素敵な本ですね」とほめる', delta: 6 },
-    { text: '「よかったら一緒に読みませんか」と誘う', delta: 12 },
-    { text: '「…どんな内容ですか？」とだけ聞く', delta: 2 },
+const CHOICES_BY_CHAR = {
+  konuko: [
+    [
+      { text: '「その本、私も好きなんです」と話しかける', delta: 6 },
+      { text: '「よかったら一緒に読みませんか」と誘う', delta: 12 },
+      { text: '「…どんな内容ですか？」とだけ聞く', delta: 2 },
+    ],
+    [
+      { text: '好きなアニメの話を振ってみる', delta: 12 },
+      { text: '「もっと聞かせてください」と促す', delta: 9 },
+      { text: '黙って相づちだけ打つ', delta: 3 },
+    ],
+    [
+      { text: '「また話してもいいですか」と聞く', delta: 10 },
+      { text: '笑顔で「楽しかったです」と言う', delta: 8 },
+      { text: 'ただ静かに微笑む', delta: 4 },
+    ],
+    [
+      { text: '好きな作品のグッズを見せてもらう', delta: 12 },
+      { text: '「今度一緒に本屋に行きませんか」と誘う', delta: 11 },
+      { text: '時間を忘れて聞き役に回る', delta: 5 },
+    ],
+    [
+      { text: '「今度好きな作品教えてください」と誘う', delta: 12 },
+      { text: '「また明日も会えますか」と聞く', delta: 8 },
+      { text: '小さく手を振ってさよならを言う', delta: 3 },
+    ],
   ],
-  [
-    { text: '「また来てもいいですか」と聞く', delta: 10 },
-    { text: '笑顔で「楽しかったです」と言う', delta: 8 },
-    { text: 'ただ静かに微笑む', delta: 4 },
+  shanko: [
+    [
+      { text: '「元気だね！」とテンションを合わせる', delta: 10 },
+      { text: '「何の話？聞かせて！」と前のめりに聞く', delta: 12 },
+      { text: '「うん…」と少し圧倒されながら返す', delta: 2 },
+    ],
+    [
+      { text: '一緒に飛び跳ねて喜ぶ', delta: 12 },
+      { text: '「すごいじゃん！」とハイタッチする', delta: 11 },
+      { text: '苦笑いしながら相づちを打つ', delta: 3 },
+    ],
+    [
+      { text: '一緒に大声で笑う', delta: 10 },
+      { text: '「次は何しようか！」と提案する', delta: 12 },
+      { text: '苦笑いしながら相づちを打つ', delta: 4 },
+    ],
+    [
+      { text: '「もっと話して！」と前のめりになる', delta: 12 },
+      { text: '一緒に大声で歌ってみる', delta: 11 },
+      { text: '少し落ち着いて話そうと提案する', delta: 5 },
+    ],
+    [
+      { text: '「またすぐ会おうよ！」と誘う', delta: 12 },
+      { text: '「今日めちゃ楽しかった」と伝える', delta: 9 },
+      { text: '手を振って静かにさよならする', delta: 3 },
+    ],
   ],
-  [
-    { text: '「一緒に帰りませんか」と誘う', delta: 12 },
-    { text: '「また明日も会えますか」と聞く', delta: 8 },
-    { text: '手を振ってさよならを言う', delta: 3 },
+  deko: [
+    [
+      { text: '「それより、こっち見て」と注意を引く', delta: 8 },
+      { text: '一緒に気になるものを見て驚く', delta: 12 },
+      { text: '「えっと、誰でしたっけ」に苦笑いする', delta: 2 },
+    ],
+    [
+      { text: '一緒にあちこち気になるものを探す', delta: 12 },
+      { text: '「それ何？教えて」と話を広げる', delta: 10 },
+      { text: '置いていかれないようについていく', delta: 4 },
+    ],
+    [
+      { text: '話題が変わっても合わせてあげる', delta: 10 },
+      { text: '「次どこ行く？」とノリよく聞く', delta: 12 },
+      { text: '黙って後をついていく', delta: 4 },
+    ],
+    [
+      { text: '「一緒に迷子になろう」と笑う', delta: 12 },
+      { text: 'デー子のペースに合わせて話す', delta: 9 },
+      { text: '少し落ち着かせるように声をかける', delta: 5 },
+    ],
+    [
+      { text: '「また気になるもの見つけたら教えて」と言う', delta: 12 },
+      { text: '「今日も忙しかったね」と笑う', delta: 8 },
+      { text: '軽く手を振ってさよならする', delta: 3 },
+    ],
   ],
-];
+};
 
 function getChoicesForTurn(turn) {
-  const idx = Math.min(turn, CHOICES_BY_TURN.length - 1);
-  return CHOICES_BY_TURN[idx];
+  const set = CHOICES_BY_CHAR[state.charKey] ?? CHOICES_BY_CHAR.konuko;
+  const idx = Math.min(turn, set.length - 1);
+  return set[idx];
 }
 
 // =========================================================
@@ -353,8 +420,10 @@ async function pickChoice(idx, choices) {
   // チェックポイント保存（選択肢を選んだ時点を記録）
   saveCheckpoint();
 
-  if (state.affection >= 80) {
-    setTimeout(showGoodEnding, 2200);
+  const totalTurns = (CHOICES_BY_CHAR[state.charKey] ?? CHOICES_BY_CHAR.konuko).length;
+
+  if (state.turn >= totalTurns) {
+    setTimeout(showEnding, 2200);
     return;
   }
 
@@ -362,16 +431,53 @@ async function pickChoice(idx, choices) {
 }
 
 // =========================================================
-// エンディング
+// エンディング（好感度によって3種類に分岐）
 // =========================================================
-function showGoodEnding() {
+const ENDINGS = {
+  good: {
+    heart: '💕',
+    title: ch => `${ch.name}と、特別な関係になれた！`,
+    desc: '二人の間に、温かくて大切な何かが生まれた。これからもずっと、隣にいたいと思った。',
+  },
+  normal: {
+    heart: '🌷',
+    title: ch => `${ch.name}と、いい友達になれた`,
+    desc: 'まだ恋人とは言えないけれど、お互いを知れた素敵な時間だった。この関係はこれからも続いていく。',
+  },
+  bad: {
+    heart: '🌧️',
+    title: ch => `${ch.name}とは、少し距離ができてしまった`,
+    desc: '伝えたかった気持ちは、うまく届かなかったみたいだ。でも、また会えばきっと話せる。',
+  },
+};
+
+function getEndingType() {
+  if (state.affection >= 70) return 'good';
+  if (state.affection >= 35) return 'normal';
+  return 'bad';
+}
+
+function showEnding() {
   const ch = CHARS[state.charKey];
-  $('ending-title').textContent = `${ch.name}との距離が縮まった！`;
-  $('ending-desc').textContent = '二人の間に、小さくて大切な何かが生まれた気がした。';
+  const type = getEndingType();
+  const ending = ENDINGS[type];
+
+  $('ending-heart').textContent = ending.heart;
+  $('ending-title').textContent = ending.title(ch);
+  $('ending-desc').textContent = ending.desc;
   $('ending-affection').textContent = `好感度 ${Math.round(state.affection)}%`;
   showScreen('ending-screen');
-  playSE('se_heart');
-  playBGM('bgm_ending');
+
+  if (type === 'good') {
+    playSE('se_heart');
+    playBGM('bgm_ending');
+  } else if (type === 'normal') {
+    playSE('se_select');
+    playBGM('bgm_normal');
+  } else {
+    playBGM('bgm_normal');
+  }
+
   clearCheckpoint(); // エンディングに到達したらチェックポイントをクリア
 }
 
