@@ -390,20 +390,15 @@ async function pickChoice(idx, choices) {
   showLoading();
 
   try {
-    const ch = CHARS[state.charKey];
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1000,
-        system: ch.persona,
-        messages: state.history.map(h => ({ role: h.role, content: h.content })),
-      }),
-    });
+    if (typeof window.getLocalDialogueReply !== 'function') {
+      throw new Error('ローカル会話エンジンが読み込まれていません');
+    }
 
-    const data = await response.json();
-    const reply = data.content?.find(b => b.type === 'text')?.text ?? '…';
+    const reply = window.getLocalDialogueReply({
+      charKey: state.charKey,
+      turn: state.turn,
+      choiceText: choice.text,
+    });
     state.history.push({ role: 'assistant', content: reply });
 
     const mood = choice.delta >= 10 ? 'happy' : choice.delta >= 6 ? 'shy' : choice.delta <= 2 ? 'sad' : 'neutral';
