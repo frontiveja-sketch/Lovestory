@@ -15,8 +15,6 @@
     attributeFilter: ['src'],
   });
 
-  const nativeFetch = window.fetch.bind(window);
-  const API_URL = 'https://api.anthropic.com/v1/messages';
   const replies = {
     konuko: [
       ['えっ、一緒に…？ う、うれしいです。ぜひお願いします…！', 'その本、気になりますよね。少しだけならお話できます…', 'あの…緊張しますけど、声をかけてくれてありがとうございます。'],
@@ -40,11 +38,6 @@
       ['また見つけたら一番に教える！ だからまた会おうね！', '忙しかったけど楽しかった！ 次も一緒に走り回ろう！', 'またね！ 次に会ったら、ちゃんと名前を呼ぶから！'],
     ],
   };
-  function characterKey(system = '') {
-    if (system.includes('しゃんこ')) return 'shanko';
-    if (system.includes('デー子')) return 'deko';
-    return 'konuko';
-  }
   function toneIndex(message = '') {
     const warmWords = ['一緒', '好き', '聞かせ', '誘う', 'また', '楽しかった', 'すごい', 'ハイタッチ', '合わせ', '教えて'];
     const quietWords = ['黙って', '苦笑', '相づち', '静か', 'ついていく', 'だけ'];
@@ -52,20 +45,14 @@
     if (quietWords.some(word => message.includes(word))) return 2;
     return 1;
   }
-  window.fetch = async function localDialogueFetch(input, init = {}) {
-    const url = typeof input === 'string' ? input : input?.url;
-    if (url !== API_URL) return nativeFetch(input, init);
-    let request = {};
-    try { request = JSON.parse(init.body || '{}'); } catch (_) {}
-    const messages = Array.isArray(request.messages) ? request.messages : [];
-    const userMessages = messages.filter(message => message.role === 'user');
-    const latest = String(userMessages.at(-1)?.content || '');
-    const turn = Math.min(Math.max(userMessages.length - 1, 0), 4);
-    const key = characterKey(String(request.system || ''));
-    const reply = replies[key][turn][toneIndex(latest)];
-    return new Response(JSON.stringify({ content: [{ type: 'text', text: reply }] }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
-    });
+  window.getLocalDialogueReply = function getLocalDialogueReply({
+    charKey = 'konuko',
+    turn = 0,
+    choiceText = '',
+  } = {}) {
+    const key = replies[charKey] ? charKey : 'konuko';
+    const lastTurn = replies[key].length - 1;
+    const safeTurn = Math.min(Math.max(Number(turn) || 0, 0), lastTurn);
+    return replies[key][safeTurn][toneIndex(String(choiceText))];
   };
 })();
