@@ -1,5 +1,20 @@
 // GitHub Pages だけで動くローカル会話エンジン。
 (() => {
+  function useBundledSprite(img) {
+    const src = img.getAttribute('src') || '';
+    const match = src.match(/^assets\/(konuko|shanko|deko)_(?:normal|happy|shy|sad)\.png$/);
+    if (match) img.setAttribute('src', match[1] + '_normal.png');
+  }
+
+  document.querySelectorAll('img[src^="assets/"]').forEach(useBundledSprite);
+  new MutationObserver(records => {
+    records.forEach(record => useBundledSprite(record.target));
+  }).observe(document.documentElement, {
+    attributes: true,
+    subtree: true,
+    attributeFilter: ['src'],
+  });
+
   const nativeFetch = window.fetch.bind(window);
   const API_URL = 'https://api.anthropic.com/v1/messages';
   const replies = {
